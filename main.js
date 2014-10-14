@@ -62,17 +62,19 @@ function processImageDataURI( dataURI ) {
     // ...
 
 
-    var buffer = "<table border=\"0\" style=\"border-spacing: 0px; border-collapse: separate;\">";
+    var tableBuffer = "<table border=\"0\" style=\"border-spacing: 0px; border-collapse: separate;\">";
+    var codeBuffer  = "";
 
     // Get the raster data
     var hRasterSize  = canvasWidth / rasterCols;
     var vRasterSize  = canvasHeight / rasterRows;
     //window.alert( "hRasterSize=" + hRasterSize + ", vRasterSize=" + vRasterSize );
-    //var dataMatrix   = [ hRasterSize ][ vRasterSize ];
+    var dataMatrix   = Array( rasterRows ); // [ hRasterSize ][ vRasterSize ];
     for( var yStep = 0; yStep*vRasterSize < canvasHeight; yStep++ ) {
 	// window.alert( "yStep=" + yStep );
 	
-	buffer += "<tr>";
+	dataMatrix[yStep] = []; // Array( hRasterSize );
+	tableBuffer += "<tr>";
 	
 	var matrixY     = Math.round( yStep*vRasterSize );
 	for( var xStep = 0; xStep*hRasterSize < canvasWidth; xStep++ ) {
@@ -88,6 +90,11 @@ function processImageDataURI( dataURI ) {
 	    var blue          = imageData.data[2];
 	    var alpha         = imageData.data[3];
 	    
+	    dataMatrix[yStep].push( { red: red, 
+				      green: green, 
+				      blue: blue 
+				    } );
+	    
 	    /*
 	    window.alert(  "red=" + red + ",\n" +
 			   "green=" + green + ",\n" +
@@ -95,15 +102,33 @@ function processImageDataURI( dataURI ) {
 			   "alpha=" + alpha + ",\n" 
 			);
 */
-	    buffer += "<td style=\"spacing: 0px; padding: 1px;\"><div style=\"width: 20px; height: 20px; color: rgb("+red+","+green+","+blue+"); margin: 0px;\">&#x2b24;</div></td>\n";
+	    tableBuffer += "<td style=\"spacing: 0px; padding: 1px;\"><div style=\"width: 20px; height: 20px; color: rgb("+red+","+green+","+blue+"); margin: 0px;\">&#x2b24;</div></td>\n";
+	    
+	    if( xStep >= 2 && xStep%2 == 0 ) {
+		if( xStep > 2 )
+		    codeBuffer += ", ";
+		codeBuffer += "0x" + rgb_word2hex( dataMatrix[yStep][xStep-1], 
+						   dataMatrix[yStep][xStep] 
+						 );
+	    }
+		
 
 	}
-	buffer += "</tr>\n";
+	tableBuffer += "</tr>\n";
+	
+	if( yStep+1 < rasterCols )
+	    codeBuffer += ",";
+	codeBuffer  += "<br/>\n";
     }
 
-    buffer += "</table>\n";
+    tableBuffer += "</table>\n";
 
 
-    document.getElementById( "output_div" ).innerHTML = buffer;
+    document.getElementById( "output_div" ).innerHTML = tableBuffer + "<br/><br/>\n" + codeBuffer;
     
+}
+
+
+function rgb_word2hex( left, right ) {
+    return "00";
 }
