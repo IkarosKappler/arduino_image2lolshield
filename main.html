@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html> 
+<head> 
+<title>Image to LoL shield code</title> 
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="HTML5, image to LoLshield Code" />
+<meta name="author" content="Ikaros Kappler" />
+<meta name="keywords" content="html5, image to lolshield code" />
+<link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+
+<style type="text/css" media="screen">
+  body {
+  background-color: #f8f8f8;
+  }
+
+table.analyzer_table {
+  border; 0px;
+}
+</style>
+
+
+<script language="Javascript" type="text/javascript" src="form_utils.js"></script>
+<script language="Javascript" type="text/javascript" src="main.js"></script>
+<script language="Javascript" type="text/javascript" src="MyImageReader.js"></script>
+
+
+</head> 
+
+
+<body> 
+
+<div id="status_div">Status: </div>
+
+Choose Image File:
+
+<input type="file" id="input_image_file" onchange="loadInputImageFile();" /><br/>
+Raster: 
+<input type="number" value="9" name="raster_rows" id="raster_rows" size="6" style="width: 35px;" /> rows 
+* 
+<input type="number" value="14" name="raster_cols" id="raster_cols" size="6" style="width: 35px;" />cols
+<br/>
+<button onclick="loadInputImageFile();">Load Image File</button><br/>
+<br/>
+
+<img id="preview_image" src="" width="140" height="90" alt="Preview Image" /><br/>
+<br/>
+<br/>
+Output:<br/>
+<div id="output_div"></div>
+
+</body>
+</html>
